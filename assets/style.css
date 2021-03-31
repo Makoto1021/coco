@@ -1,0 +1,16 @@
+#parent {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    background: red;
+    display: block; /* fix for opera and ff */
+}
+
+#child {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: blue;
+    top: 0;
+    left: 100%; /* this line of code will sort things out for you :) */
+}
