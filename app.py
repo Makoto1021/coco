@@ -8,10 +8,15 @@ from dash.dependencies import Input, Output
 import numpy
 import base64
 import os
+from os import listdir
+from os.path import isfile, join
+import random
 
 df = pd.read_csv("sample.csv")
 TOKEN = "pk.eyJ1IjoibWFrb3RvMTAyMSIsImEiOiJja213ZmZyenUwZWRxMnZwcTFzMWwzM2dmIn0.6idG-26PNC6pwiKqbYqiXQ"
 px.set_mapbox_access_token(TOKEN)
+image_directory = "/Users/mmiyazaki/Documents/Coco/assets/pictures"
+img_list = [f for f in listdir(image_directory) if isfile(join(image_directory, f))]
 
 app = dash.Dash(__name__)
 application = app.server
@@ -32,7 +37,8 @@ fig = go.Figure(go.Scattermapbox(
 fig.update_traces(
     hovertemplate="<br>".join([
         "%{text}",
-        "%{customdata[0]}"
+        "%{customdata[0]}",
+        "<extra></extra>"
     ])
 )
 
@@ -51,6 +57,20 @@ fig.update_layout(
     ),
     margin=dict(t=0, b=0, l=0, r=0)
 )
+
+fig.add_trace(go.Scattermapbox(
+        lat=[48.879971],
+        lon=[2.313587],
+        mode='markers',
+        marker=go.scattermapbox.Marker(
+            size=12,
+            color='red',
+            opacity=0.5,
+            symbol="circle"
+        ),
+        text="You are here!",
+        hoverinfo='text'
+    ))
 
 app.layout = html.Div(className="app-header",
     children=[
@@ -97,7 +117,7 @@ def show_desc(data):
         age = "Age: " + str(df[df['id']==id].age.values[0])
         comment = df[df['id']==id].comment.values[0]
         stars = df[df['id']==id].stars.values[0]
-        image_url = "/assets/pictures/" + name + ".png"
+        image_url = random.choice(img_list)
         print(image_url)
     return image_url, name, age, comment, stars
 
