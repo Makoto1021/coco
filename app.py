@@ -112,12 +112,14 @@ def show_desc(data):
         comment = ""
         stars = ""
     else:
+        image = image_directory + "/" + random.choice(img_list)
+        test_base64 = base64.b64encode(open(image, 'rb').read()).decode('ascii')
+        image_url='data:image/jpg;base64,{}'.format(test_base64)
         id = data['points'][0]['customdata'][1]
         name = df[df['id']==id].name.values[0]
         age = "Age: " + str(df[df['id']==id].age.values[0])
         comment = df[df['id']==id].comment.values[0]
         stars = df[df['id']==id].stars.values[0]
-        image_url = random.choice(img_list)
         print(image_url)
     return image_url, name, age, comment, stars
 
