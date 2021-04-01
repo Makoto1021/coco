@@ -23,7 +23,7 @@ fig = go.Figure(go.Scattermapbox(
         lon=df['lon'].values,
         mode='markers',
         marker=go.scattermapbox.Marker(
-            size=9, symbol="dog-park"
+            size=15, symbol="dog-park"
         ),
         text=df['name'],
         customdata=df[['stars', 'id']]
@@ -94,7 +94,7 @@ def show_desc(data):
     else:
         id = data['points'][0]['customdata'][1]
         name = df[df['id']==id].name.values[0]
-        age = df[df['id']==id].age.values[0]
+        age = "Age: " + str(df[df['id']==id].age.values[0])
         comment = df[df['id']==id].comment.values[0]
         stars = df[df['id']==id].stars.values[0]
         image_url = "/assets/pictures/" + name + ".png"
