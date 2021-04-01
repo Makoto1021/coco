@@ -11,6 +11,8 @@ import os
 from os import listdir
 from os.path import isfile, join
 import random
+from datetime import date
+from datetime import datetime as dt
 
 df = pd.read_csv("sample.csv")
 TOKEN = "pk.eyJ1IjoibWFrb3RvMTAyMSIsImEiOiJja213ZmZyenUwZWRxMnZwcTFzMWwzM2dmIn0.6idG-26PNC6pwiKqbYqiXQ"
@@ -18,79 +20,141 @@ px.set_mapbox_access_token(TOKEN)
 image_directory = "/Users/mmiyazaki/Documents/Coco/assets/pictures"
 img_list = [f for f in listdir(image_directory) if isfile(join(image_directory, f))]
 
+today = dt.today().replace(microsecond=0, second=0, minute=0, hour=0)
+today = date(today.year, today.month, today.day)
+
 app = dash.Dash(__name__)
 application = app.server
 app.title='Find a pet-sitter nearby!'
 app.server.static_folder = 'static'
 
-fig = go.Figure(go.Scattermapbox(
-        lat=df['lat'].values,
-        lon=df['lon'].values,
-        mode='markers',
-        marker=go.scattermapbox.Marker(
-            size=15, symbol="dog-park"
-        ),
-        text=df['name'],
-        customdata=df[['stars', 'id']]
-    ))
+datePicker = dcc.DatePickerSingle(
+                    id='my-date-picker-single',
+                    date=today)
+timeRangeMarks = {str(int(i)):{'label':str(i)+':00'} for i in range(0, 25)}
 
-fig.update_traces(
-    hovertemplate="<br>".join([
-        "%{text}",
-        "%{customdata[0]}",
-        "<extra></extra>"
-    ])
-)
+timeSlider = dcc.RangeSlider(
+                            min=0,
+                            max=25,
+                            step=None,
+                            value=[12, 18],
+                            marks=timeRangeMarks
+                        )  
 
-fig.update_layout(
-    autosize=True,
-    hovermode='closest',
-    mapbox=dict(
-        accesstoken=TOKEN,
-        bearing=0,
-        center=dict(
-            lat=48.880460,
-            lon=2.309019
-        ),
-        pitch=0,
-        zoom=12
-    ),
-    margin=dict(t=0, b=0, l=0, r=0)
-)
+searchButton = html.Button('Search', id='search-button', n_clicks=0)
 
-fig.add_trace(go.Scattermapbox(
-        lat=[48.879971],
-        lon=[2.313587],
-        mode='markers',
-        marker=go.scattermapbox.Marker(
-            size=12,
-            color='red',
-            opacity=0.5,
-            symbol="circle"
-        ),
-        text="You are here!",
-        hoverinfo='text'
-    ))
 
-app.layout = html.Div(className="app-header",
+
+app.layout = html.Div(
+    className="app-header",
     children=[
-        html.Div(html.H1(children='Find a pet-sitter nearby!'), className="app-header--title"),
         html.Div(
-            dcc.Graph(figure=fig, id='map'), 
-            style={'width':'50%', 'display': 'inline-block'},
-            className="app-header--graph"),
+            html.H1(children='Find a pet-sitter nearby!'),
+            className="app-header--title"
+            ),
+
         html.Div(
-            className="app-header--desc",
-            children=[
-                html.Img(id='image', className="app-header--desc--image"),
-                html.H3(id='name'), 
-                html.H4(id='stars'), 
-                html.H5(id='age'),
-                html.P(id='comment')],
-                style={'width':'30%','display': 'inline-block'})
+            className="app-body",
+            children = [
+                html.Div(
+                    className="app-body--left-panel",
+                    children=[
+                        html.Div(
+                            datePicker,
+                            className="app-body--datepicker"),
+                        html.Div(
+                            timeSlider,
+                            className="app-body--timeslider"),
+                        html.Div(
+                            searchButton,
+                            #id='search-button',
+                            className="app-body--searchbutton"
+                        ),
+                        html.Div(
+                            dcc.Graph(id='map'),
+                            className="app-body--map")]),
+            
+                html.Div(
+                    className="app-body--right-panel",
+                    children=[
+                        html.Div(
+                            html.Img(
+                                id='image', 
+                                className="app-body--desc--image"),
+                            className="app-body--right-panel-img"),
+                        html.Div(
+                            className="app-body--right-panel-desc",
+                            children=[
+                            html.H3(id='name'), 
+                            html.H4(id='stars'), 
+                            html.H5(id='age'),
+                            html.P(id='comment')
+                        ])
+                        ])])
         
     ]
 )
+
+@app.callback(
+    Output('map', 'figure'),
+    Input('search-button', 'n_clicks')
+)
+def show_maps(n_clicks):
+    print(n_clicks)
+    if n_clicks == 0:
+        fig = go.Figure()
+    else:
+        fig = go.Figure(go.Scattermapbox(
+            lat=df['lat'].values,
+            lon=df['lon'].values,
+            mode='markers',
+            marker=go.scattermapbox.Marker(
+                size=15, symbol="dog-park"
+            ),
+            text=df['name'],
+            customdata=df[['stars', 'id']]
+        ))
+
+        fig.update_traces(
+            hovertemplate="<br>".join([
+                "%{text}",
+                "%{customdata[0]}",
+                "<extra></extra>"
+            ])
+        )
+
+        fig.update_layout(
+            autosize=True,
+            showlegend= False,
+            hovermode='closest',
+            mapbox=dict(
+                accesstoken=TOKEN,
+                bearing=0,
+                center=dict(
+                    lat=48.880460,
+                    lon=2.309019
+                ),
+                pitch=0,
+                zoom=12
+            ),
+            margin=dict(t=0, b=0, l=0, r=0)
+        )
+
+        fig.add_trace(go.Scattermapbox(
+                lat=[48.879971],
+                lon=[2.313587],
+                mode='markers',
+                marker=go.scattermapbox.Marker(
+                    size=12,
+                    color='red',
+                    opacity=0.5,
+                    symbol="circle"
+                ),
+                text="You are here!",
+                hoverinfo='text'
+            ))
+    return fig
+
 
 @app.callback(
     [
@@ -120,7 +184,6 @@ def show_desc(data):
         age = "Age: " + str(df[df['id']==id].age.values[0])
         comment = df[df['id']==id].comment.values[0]
         stars = df[df['id']==id].stars.values[0]
-        print(image_url)
     return image_url, name, age, comment, stars
 
 if __name__ == '__main__':

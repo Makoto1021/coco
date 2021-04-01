@@ -9,20 +9,74 @@
     padding-left: 5px;
 }
 
-.app-header .app-header--graph {
+.app-body {
+    font-size: 20px;
+    width:100%;
+    padding-left: 5px;
+    display:inline-block;
+}
+
+.app-body .app-body--left-panel {
+    font-size: 20px;
+    width:45%;
+    display:inline-block;
+    vertical-align: top;
+}
+
+.app-body .app-body--datepicker {
     font-size: 40px;
-    height: 600px;
+    height: 100%;
     padding-left: 5px;
 }
 
-.app-header .app-header--desc {
+.app-body .app-body--timeslider {
+    font-size: 10px;
+    height: 100%;
+    padding-top: 10px;
+    padding-left: 5px;
+}
+
+.app-body .app-body--searchbutton {
+    font-size: 10px;
+    height: 50%;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.app-body .app-body--map {
+    font-size: 40px;
+    height: 600px;
+    padding-left: 5px;
+    padding-top:20px;
+}
+
+.app-body .app-body--right-panel {
     font-size: 15px;
     height: 60px;
     line-height: 90%;
     padding-left: 5px;
+    width:30%;
+    display:inline-block;
 }
 
-.app-header .app-header--desc .app-header--desc--image {
-    max-width:100%;
-    max-height:auto;
+.app-body .app-body--right-panel .app-body--right-panel-img {
+    
+    padding-left: 20px;
+    padding-top:20px;
+    max-width: 100%;
+    height:auto;
+}
+
+.app-body .app-body--right-panel .app-body--right-panel-desc {
+    
+    padding-left: 40px;
+    max-width: 100%;
+    height:auto;
+}
+
+.app-body .app-body--right-panel .app-body--right-panel-img .app-body--desc--image {
+    padding-top: 50px;
+    padding-left: 20px;
+    max-width: 100%;
+    height:auto;
 }
