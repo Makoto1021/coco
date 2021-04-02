@@ -25,15 +25,55 @@
 
 .app-body .app-body--datepicker {
     font-size: 40px;
-    height: 100%;
+    height: 50%;
     padding-left: 5px;
+    width:80%;
 }
 
-.app-body .app-body--timeslider {
-    font-size: 10px;
-    height: 100%;
+.app-body .app-body--datepickerContainer {
+    font-size: 40px;
+    height: 50%;
+    padding-left: 5px;
+    width:20%;
+    display:inline-block;
+}
+
+.app-body .app-body--startTime {
+    font-size: 20px;
+    height: 50%;
     padding-top: 10px;
     padding-left: 5px;
+    padding-right: 5px;
+    width:100%;
+    display:inline-block;
+}
+
+.app-body .app-body--startTimeContainer {
+    height: 80%;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 5px;
+    width:30%;
+    display:inline-block;
+}
+
+.app-body .app-body--endTime {
+    font-size: 20px;
+    height: 50%;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width:100%;
+    display:inline-block;
+}
+
+.app-body .app-body--endTimeContainer {
+    height: 80%;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width:30%;
+    display:inline-block;
 }
 
 .app-body .app-body--searchbutton {

@@ -30,16 +30,22 @@ app.server.static_folder = 'static'
 
 datePicker = dcc.DatePickerSingle(
                     id='my-date-picker-single',
-                    date=today)
+                    date=today, 
+                    className="app-body--datepicker")
 timeRangeMarks = {str(int(i)):{'label':str(i)+':00'} for i in range(0, 25)}
 
-timeSlider = dcc.RangeSlider(
-                            min=0,
-                            max=25,
-                            step=None,
-                            value=[12, 18],
-                            marks=timeRangeMarks
-                        )  
+timeLabels = [{'label':str(i)+":00", 'value':str(i)+":00"} for i in range(0, 25)]
+startTime = dcc.Dropdown(
+    options=timeLabels,
+    searchable=False,
+    className="app-body--startTime",
+)
+
+endTime = dcc.Dropdown(
+    options=timeLabels,
+    searchable=False,
+    className="app-body--endTime",
+)
 
 searchButton = html.Button('Search', id='search-button', n_clicks=0)
 
@@ -61,10 +67,23 @@ app.layout = html.Div(
                     children=[
                         html.Div(
                             datePicker,
-                            className="app-body--datepicker"),
+                            className="app-body--datepickerContainer"
+                            ),
+
                         html.Div(
-                            timeSlider,
-                            className="app-body--timeslider"),
+                            className="app-body--startTimeContainer",
+                            children=[
+                                html.Label('Start:'),
+                                startTime]
+                            ),
+                        
+                        html.Div(
+                            className="app-body--endTimeContainer",
+                            children=[
+                                html.Label('End:'),
+                                endTime]
+                            ),
+                        
                         html.Div(
                             searchButton,
                             #id='search-button',
@@ -102,14 +121,32 @@ app.layout = html.Div(
 def show_maps(n_clicks):
     print(n_clicks)
     if n_clicks == 0:
-        fig = go.Figure()
+        fig = go.Figure(go.Scattermapbox())
+
+        fig.update_layout(
+            autosize=True,
+            showlegend= False,
+            hovermode='closest',
+            mapbox=dict(
+                accesstoken=TOKEN,
+                bearing=0,
+                center=dict(
+                    lat=48.880460,
+                    lon=2.309019
+                ),
+                pitch=0,
+                zoom=12
+            ),
+            margin=dict(t=0, b=0, l=0, r=0)
+        )
+
     else:
         fig = go.Figure(go.Scattermapbox(
             lat=df['lat'].values,
             lon=df['lon'].values,
             mode='markers',
             marker=go.scattermapbox.Marker(
-                size=15, symbol="dog-park"
+                size=15, symbol="veterinary", color='blue'
             ),
             text=df['name'],
             customdata=df[['stars', 'id']]
@@ -147,8 +184,7 @@ def show_maps(n_clicks):
                 marker=go.scattermapbox.Marker(
                     size=12,
                     color='red',
-                    opacity=0.5,
-                    symbol="circle"
+                    symbol="dog-park"
                 ),
                 text="You are here!",
                 hoverinfo='text'
