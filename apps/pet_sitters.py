@@ -39,7 +39,9 @@ layout = html.Div(
                 html.Div(
                     className="sitter-body--left-panel",
                     children=[
-                      html.Div(id='reviews')
+                        html.Div(html.H4("Details"), id="details"),
+                        html.Div(html.H4("Reviews")),
+                        html.Div(id='reviews')
                     ]
                 ),
                 html.Div(
@@ -85,9 +87,13 @@ def show_reivews(pathname, children):
     age = "Age: " + str(df[df['id']==id].age.values[0])
     comment = df[df['id']==id].comment.values[0]
     stars = df[df['id']==id].stars.values[0]
+    id_provided = html.H4("👌ID provided👌")
+    certified = html.H4("👑CERTIFIED PET-SITTER👑")
 
     div_right = [
         html.H3(name), 
+        id_provided,
+        certified,
         html.H4(stars), 
         html.H5(age),
         html.P(comment)

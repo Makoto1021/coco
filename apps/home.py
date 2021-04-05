@@ -108,14 +108,9 @@ layout = html.Div(
 
                         html.Div(
                             className="app-body--right-panel-desc",
-                            children=[
-                                html.H3(id='name'), 
-                                html.H4(id='stars'), 
-                                html.H5(id='age'),
-                                html.P(id='comment'),
-                                html.Div(id='request-link'),
-                                # html.Div(sitterDetailButton),
-                                ])
+                            id='desc',
+
+                                )
                     ]
                 )
             ]
@@ -205,11 +200,12 @@ def show_maps(n_clicks):
 @app.callback(
     [
         Output('image', 'src'),
-        Output('name', 'children'),
-        Output('age', 'children'),
-        Output('comment', 'children'),
-        Output('stars', 'children'),
-        Output('request-link', 'children'),
+        #Output('name', 'children'),
+        #Output('age', 'children'),
+        #Output('comment', 'children'),
+        #Output('stars', 'children'),
+        #Output('request-link', 'children'),
+        Output('desc', 'children'),
         Output('intermediate-value', 'children')
     ],
     [
@@ -225,6 +221,7 @@ def show_desc(data):
         stars = ""
         request_link = ""
         intermediate_value = ""
+        div = []
     else:
         image = image_directory + "/" + random.choice(img_list)
         test_base64 = base64.b64encode(open(image, 'rb').read()).decode('ascii')
@@ -234,10 +231,23 @@ def show_desc(data):
         age = "Age: " + str(df[df['id']==id].age.values[0])
         comment = df[df['id']==id].comment.values[0]
         stars = df[df['id']==id].stars.values[0]
+        id_provided = html.H4("👌ID provided👌")
+        certified = html.H4("👑CERTIFIED PET-SITTER👑")
         request_link = dcc.Link('Request a pet-sitting', href='/apps/pet-sitters')
         intermediate_value = {"id":id, "name":name, "age":age, "comment":comment, "stars":stars, "image":image}
         intermediate_value = json.dumps(intermediate_value)
 
+        div = [
+            html.H3(name, id='name'),
+            id_provided, 
+            certified, 
+            html.H4(stars, id='stars'), 
+            html.H5(age, id='age'),
+            html.P(comment, id='comment'),
+            html.Div(request_link, id='request-link'),
+        ]
+
         # review = df_reviews.values[9][0]%name
 
-    return image_url, name, age, comment, stars, request_link, intermediate_value
+    # return image_url, name, age, comment, stars, request_link, intermediate_value
+    return image_url, div, intermediate_value

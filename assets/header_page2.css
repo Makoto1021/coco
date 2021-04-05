@@ -1,0 +1,44 @@
+.sitter-header {
+    height: 70px;
+    border-bottom: thin lightgrey solid;
+}
+
+.sitter-header .sitter-header--title {
+    font-size: 20px;
+    height: 100%;
+    padding-left: 5px;
+}
+
+.sitter-body {
+    font-size: 20px;
+    width:100%;
+    padding-left: 5px;
+    display:inline-block;
+}
+
+.sitter-body .sitter-body--left-panel {
+    font-size: 20px;
+    font-style: italic;
+    line-height: 40px;
+    color:'black';
+    width:45%;
+    display:inline-block;
+    vertical-align: top;
+}
+
+.sitter-body .sitter-body--right-panel {
+    font-size: 15px;
+    height: 60px;
+    line-height: 90%;
+    padding-left: 5px;
+    width:30%;
+    display:inline-block;
+}
+
+.sitter-body .sitter-body--right-panel .sitter-body--desc--image {
+    
+    padding-left: 20px;
+    padding-top:20px;
+    max-width: 100%;
+    height:auto;
+}
