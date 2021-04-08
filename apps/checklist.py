@@ -26,13 +26,14 @@ image_directory = "/Users/mmiyazaki/Documents/Coco/assets/pictures"
 # components
 foodCheckList = dcc.Checklist(
     options=[
-        {"label": "I bring my own food!", "value": "food"},
+        {"label": "I bring my own food!", "value": "bringFood"},
     ],
     labelStyle=dict(display="block"),
+    id="food",
 )
 
 foodComment = dcc.Textarea(
-    placeholder="Do you want to leave a comment about his food?",
+    placeholder="Do you want to leave a comment about his food?", id="food-comment"
 )
 
 foodTimeCheckList = dcc.Checklist(
@@ -48,31 +49,35 @@ foodTimeCheckList = dcc.Checklist(
         {"label": "10PM-12PM", "value": "22_0"},
     ],
     labelStyle=dict(display="block"),
+    id="food-time-checklist",
 )
 
 snackCheckList = dcc.Checklist(
     options=[
-        {"label": "I bring my own snacks!", "value": "snacks"},
+        {"label": "I bring my own snacks!", "value": "bringSnacks"},
     ],
     labelStyle=dict(display="block"),
+    id="snack-checklist",
 )
 
 snackComment = dcc.Textarea(
-    placeholder="Do you want to leave a comment about his snacks?",
+    placeholder="Do you want to leave a comment about his snacks?", id="snack-comment"
 )
 
 amenityCheckList = dcc.Checklist(
     options=[
-        {"label": "I bring my own toys!", "value": "toys"},
-        {"label": "I bring my own leash!", "value": "leash"},
-        {"label": "I bring my own toilette sheets!", "value": "sheets"},
-        {"label": "I bring my own blankets/bed!", "value": "bed"},
+        {"label": "I bring my own toys!", "value": "bringToys"},
+        {"label": "I bring my own leash!", "value": "bringLeash"},
+        {"label": "I bring my own toilette sheets!", "value": "bringSheets"},
+        {"label": "I bring my own blankets/bed!", "value": "bringBed"},
     ],
     labelStyle=dict(display="block"),
+    id="amenity-checklist",
 )
 
 amenityComment = dcc.Textarea(
     placeholder="Do you want to leave a comment about his ammenities?",
+    id="amenity-comment",
 )
 
 walkTimeCheckList = dcc.Checklist(
@@ -88,15 +93,16 @@ walkTimeCheckList = dcc.Checklist(
         {"label": "10PM-12PM", "value": "22_0"},
     ],
     labelStyle=dict(display="block"),
+    id="walktime-checklist",
 )
 
 walkComment = dcc.Textarea(
-    placeholder="Do you want to leave a comment about the walks?",
+    placeholder="Do you want to leave a comment about the walks?", id="walk-comment"
 )
 
 # submitButton = html.Button("Submit", id="submit-button", n_clicks=0)
-submitButton = html.A(
-    html.Button("Submit", className="submit-button", id="rsubmit-button", n_clicks=0),
+nextButton = html.A(
+    html.Button("Next", className="next-button", id="next-button", n_clicks=0),
     href="/apps/drop_pickup",
 )
 
@@ -119,6 +125,64 @@ layout = html.Div(
         html.H3("Select the hours for the walks"),
         walkTimeCheckList,
         walkComment,
-        html.Div(submitButton),
+        html.Div(nextButton),
     ],
 )
+
+"""
+@app.callback(
+    [Output("intermediate-value-2", "children")],
+    [Input("intermediate-value-2", "children"), Input("food", "value")],
+)
+def update_foodChecklist(data, value):
+    print("food-checklist", value)
+    json_data = json.loads(data)
+    json_data["foodCheck"] = value
+    updated_json = json.dumps(json_data)
+    print("updated_json", updated_json)
+    return updated_json
+
+
+
+@app.callback(
+    [Output("intermediate-value-2", "children")],
+    [
+        Input("food-checklist", "value"),
+        Input("food-comment", "value"),
+        Input("food-time-checklist", "value"),
+        Input("snack-checklist", "value"),
+        Input("snack-comment", "value"),
+        Input("amenity-checklist", "value"),
+        Input("amenity-comment", "value"),
+        Input("walktime-checklist", "value"),
+        Input("walk-comment", "value"),
+        Input("next-button", "n_clicks"),
+    ],
+)
+def submit_checklist1(
+    foodCheck,
+    foodComment,
+    foodTime,
+    snackCheck,
+    snackComment,
+    amenityCheck,
+    amenityComment,
+    walkTimeCheck,
+    walkComment,
+    n_clicks,
+):
+    intermediate_value = {
+        "foodCheck": foodCheck,
+        "foodComment": foodComment,
+        "foodTime": foodTime,
+        "snackCheck": snackCheck,
+        "snackComment": snackComment,
+        "amenityCheck": amenityCheck,
+        "amenityComment": amenityComment,
+        "walkTimeCheck": walkTimeCheck,
+        "walkComment": walkComment,
+    }
+    print("intermediate_value is", intermediate_value)
+    intermediate_value = json.dumps(intermediate_value)
+    return intermediate_value
+"""

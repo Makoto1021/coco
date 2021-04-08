@@ -90,6 +90,9 @@ def show_reivews(pathname, children):
     id_provided = html.H4("👌ID provided👌")
     certified = html.H4("👑CERTIFIED PET-SITTER👑")
     price = html.H3("20€ / hour")
+    member_since = html.H3("Pet-sitter since 2020. Oct")
+    experience = html.H3("Total days spent for pet-sitting: 25 days")
+    home_type = html.H3(random.choice(["Apartment", "Home", "Home with a garden"]))
     requestButton = html.A(
         html.Button(
             "Request", className="request-button", id="request-button", n_clicks=0

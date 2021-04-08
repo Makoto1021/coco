@@ -1,6 +1,6 @@
 from app import app
 from app import server
-from apps import home, pet_sitters, checklist, drop_pickup
+from apps import home, pet_sitters, checklist, drop_pickup, congrats
 
 import plotly.graph_objects as go
 import pandas as pd
@@ -26,6 +26,8 @@ app.layout = html.Div(
                 dcc.Link("Home", href="/apps/home"),
                 # dcc.Link('Pet sitters', href='/apps/pet-sitters'),
                 html.Div(id="intermediate-value", style={"display": "none"}),
+                html.Div(id="intermediate-value-2", style={"display": "none"}),
+                html.Div(id="intermediate-value-3", style={"display": "none"}),
             ],
             className="row",
         ),
@@ -44,6 +46,8 @@ def display_page(pathname):
         return checklist.layout
     elif pathname == "/apps/drop_pickup":
         return drop_pickup.layout
+    elif pathname == "/apps/congrats":
+        return congrats.layout
     else:
         return home.layout
 
